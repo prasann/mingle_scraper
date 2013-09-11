@@ -1,0 +1,5 @@
+gem "ox"
+gem "slim"
+gem "RedCloth"
+gem "pdfkit"
+gem "rest_client"
