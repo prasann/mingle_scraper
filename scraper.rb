@@ -7,6 +7,7 @@ Bundler.setup
 require 'rest_client'
 require 'RedCloth'
 require 'crack/xml'
+require 'erb'
 
 class Mingle
 
@@ -19,8 +20,8 @@ class Mingle
   end
 
   def get_all_cards
-    xml = RestClient.get "#{@protocol}://#{@user_name}:#{@password}@#{@api_url}/cards/109.xml"
-    #xml = RestClient.get 'http://prasanna.local:8000/card_sample.xml'
+    #xml = RestClient.get "#{@protocol}://#{@user_name}:#{@password}@#{@api_url}/cards/109.xml"
+    xml = RestClient.get 'http://prasanna.local:8000/card_sample.xml'
     xml_obj = Crack::XML.parse(xml)
     Card.new(xml_obj["card"], self)
   end
@@ -61,16 +62,8 @@ class Scraper
   def self.scrape
     mingle = Mingle.new
     card = mingle.get_all_cards
-    p "Story Number: #{card.number}"
-    p "Story Name: #{card.name}"
-    p "Created On: #{card.created_on}"
-    p "Created By: #{card.created_by['name']}"
-
-    p "Last Modified On: #{card.modified_on}"
-    p "Last Modified By: #{card.modified_by['name']}"
-
-    p "Story Points: #{card.property('Story Points')}"
-    p "Internal Systems Involved: #{card.property('Internal System(s) involved')}"
+    html = ERB.new(File.read('result.html.erb')).result({:card => card}.instance_eval {binding})
+    File.open("document.html", "w+") { |f| f.write(html) }
   end
 
 end
