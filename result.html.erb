@@ -4,22 +4,41 @@
           font-family: sans-serif;
       }
 
-      .card h1 {
-          margin: 10px;
-          font-weight: bold;
+      .card h2 {
           font-size: 1.2em;
-          text-transform: uppercase;
+          line-height: 110%;
+          padding: 5px;
+          margin-bottom: 0;
       }
 
-      .card h2 {
+      .card h1 {
+          font-size: 1.2em;
+          color: #ff7f00;
+      }
+
+      .meta .header {
           font-weight: normal;
           font-size: 1.2em;
           line-height: 110%;
-          background: #357EC7;
+          background: #ff7f00;
           color: white;
           border-bottom: 4px solid silver;
           padding: 5px;
           margin-bottom: 0;
+      }
+
+      .meta {
+          background: #d3d3d3;
+      }
+
+      .meta .meta_prop {
+          display: inline-block;
+          margin: 5px;
+      }
+
+      .meta .body {
+          margin-top: 5px;
+          line-height: 120%;
       }
 
       .card table {
@@ -32,8 +51,38 @@
           border: 1px solid black;
       }
   </style>
+  <!--[if lt IE 9]>
+  <style type="text/css">
+      .meta .meta_prop {
+          display: inline;
+          margin: 5px;
+          zoom: 1;
+      }
+  </style>
+  <![endif]-->
+
   <title>Discovery Mingle Cards</title>
 </head>
+<div>
+  <a href="#<%= card.number %>">Story#<%= card.number %> : <%= card.name %></a>
+</div>
+
 <div class="card">
+  <div class="meta">
+    <a name="<%= card.number %>">
+      <div class="header">Story#<%= card.number %> : <%= card.name %></div>
+    </a>
+
+    <div class="body">
+      <div class="meta_prop"><b>Internal Systems Involved:</b> <%= card.property('Internal System(s) involved') %></div>
+      <div class="meta_prop"><b>Created On: </b><%= card.created_on.strftime("%b %e, %H:%M %Z") %>
+        (<%= card.created_by['name'] %>)
+      </div>
+      <div class="meta_prop">
+        <b>Last Modified by: </b><%= card.modified_on.strftime("%b %e, %H:%M %Z") %> (<%= card.modified_by['name'] %>)
+      </div>
+      <div class="meta_prop"><b>Played in Iteration :</b><%= card.property('Current Iteration') %></div>
+    </div>
+  </div>
   <%= card.description %>
 </div>
