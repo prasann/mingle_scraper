@@ -2,6 +2,13 @@
   <style>
       html {
           font-family: sans-serif;
+          text-align: justify;
+          margin:0 10px;
+          border: 1px black solid;
+      }
+
+      body{
+          background: #f0f0f0;
       }
 
       .card h2 {
@@ -9,6 +16,11 @@
           line-height: 110%;
           padding: 5px;
           margin-bottom: 0;
+      }
+
+      .list a:link,a:visited,a:active,a:hover{
+          text-decoration: none;
+          color: black;
       }
 
       .card h1 {
@@ -28,6 +40,7 @@
       }
 
       .meta {
+          margin-top: 10px;
           background: #d3d3d3;
       }
 
@@ -63,11 +76,15 @@
 
   <title>Discovery Mingle Cards</title>
 </head>
-<div>
-  <a name="top">Discovery Pass Manager</a>
-  <% cards.each do |card| %>
-      <div><a href="#<%= card.number %>">Story#<%= card.number %> : <%= card.name %></a></div>
+<div class="list">
+  <a name="top"><h2>Discovery Pass Manager</h2></a>
+  <% cards.group_by(&:property).map do |k, grouped_cards| %>
+      <h3><%= k %></h3>
+      <% grouped_cards.each do |card| %>
+          <div><a href="#<%= card.number %>">Story#<%= card.number %> : <%= card.name %></a></div>
+      <% end %>
   <% end %>
+
 </div>
 <% cards.each do |card| %>
     <div class="card">
