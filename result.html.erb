@@ -64,25 +64,32 @@
   <title>Discovery Mingle Cards</title>
 </head>
 <div>
-  <a href="#<%= card.number %>">Story#<%= card.number %> : <%= card.name %></a>
+  <a name="top">Discovery Pass Manager</a>
+  <% cards.each do |card| %>
+      <div><a href="#<%= card.number %>">Story#<%= card.number %> : <%= card.name %></a></div>
+  <% end %>
 </div>
+<% cards.each do |card| %>
+    <div class="card">
+      <div class="meta">
+        <a name="<%= card.number %>">
+          <div class="header">Story#<%= card.number %> : <%= card.name %></div>
+        </a>
 
-<div class="card">
-  <div class="meta">
-    <a name="<%= card.number %>">
-      <div class="header">Story#<%= card.number %> : <%= card.name %></div>
-    </a>
-
-    <div class="body">
-      <div class="meta_prop"><b>Internal Systems Involved:</b> <%= card.property('Internal System(s) involved') %></div>
-      <div class="meta_prop"><b>Created On: </b><%= card.created_on.strftime("%b %e, %H:%M %Z") %>
-        (<%= card.created_by['name'] %>)
+        <div class="body">
+          <div class="meta_prop"><b>Internal Systems Involved:</b> <%= card.property('Internal System(s) involved') %>
+          </div>
+          <div class="meta_prop"><b>Created On: </b><%= card.created_on.strftime("%b %e, %H:%M %Z") %>
+            (<%= card.created_by['name'] %>)
+          </div>
+          <div class="meta_prop">
+            <b>Last Modified by: </b><%= card.modified_on.strftime("%b %e, %H:%M %Z") %>
+            (<%= card.modified_by['name'] %>)
+          </div>
+          <div class="meta_prop"><b>Played in Iteration :</b><%= card.property('Current Iteration') %></div>
+        </div>
       </div>
-      <div class="meta_prop">
-        <b>Last Modified by: </b><%= card.modified_on.strftime("%b %e, %H:%M %Z") %> (<%= card.modified_by['name'] %>)
-      </div>
-      <div class="meta_prop"><b>Played in Iteration :</b><%= card.property('Current Iteration') %></div>
+      <%= card.description %>
     </div>
-  </div>
-  <%= card.description %>
-</div>
+    <a href="#top">Back to Top</a>
+<% end %>

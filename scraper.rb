@@ -19,11 +19,11 @@ class Mingle
     @api_url = @base_url << "/api/v2/projects/discovery___pass_manager_new"
   end
 
-  def get_all_cards
-    #xml = RestClient.get "#{@protocol}://#{@user_name}:#{@password}@#{@api_url}/cards/109.xml"
-    xml = RestClient.get 'http://prasanna.local:8000/card_sample.xml'
+  def get_all_cards(page)
+    xml = RestClient.get "#{@protocol}://#{@user_name}:#{@password}@#{@api_url}/cards.xml?tree_name=Story%20Tree&page=#{page}"
+    #xml = RestClient.get 'http://prasanna.local:8000/cards.xml'
     xml_obj = Crack::XML.parse(xml)
-    Card.new(xml_obj["card"], self)
+    xml_obj["cards"].collect { |card_xml| Card.new(card_xml, self) }
   end
 end
 
@@ -35,7 +35,7 @@ class Card
   end
 
   def description
-    RedCloth.new(@xml["description"]).to_html
+    RedCloth.new(@xml["description"]).to_html unless @xml["description"].nil?
   end
 
   def release_name
@@ -61,11 +61,10 @@ end
 class Scraper
   def self.scrape
     mingle = Mingle.new
-    card = mingle.get_all_cards
-    html = ERB.new(File.read('result.html.erb')).result({:card => card}.instance_eval {binding})
+    cards = (1..2).collect { |page| mingle.get_all_cards(page) }.flatten
+    html = ERB.new(File.read('result.html.erb')).result({:cards => cards}.instance_eval { binding })
     File.open("document.html", "w+") { |f| f.write(html) }
   end
-
 end
 
 Scraper.scrape
