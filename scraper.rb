@@ -21,7 +21,7 @@ class Mingle
 
   def get_all_cards(page)
     p "Collecting Data from mingle for page : #{page}"
-    xml = RestClient.get "#{@protocol}://#{@user_name}:#{@password}@#{@api_url}/cards.xml?page=#{page}"
+    xml = RestClient.get "#{@protocol}://#{@user_name}:#{@password}@#{@api_url}/cards.xml?filters[]=[Type][is][story]&filters[]=[Type][is][Tech%20Task]&page=#{page}"
     #xml = RestClient.get 'http://prasanna.local:8000/cards.xml'
     xml_obj = Crack::XML.parse(xml)
     p "Done with page : #{page}"
