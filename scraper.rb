@@ -13,9 +13,9 @@ class Mingle
 
   def initialize
     @protocol = "https"
-    @base_url = "discovery.mingle.thoughtworks.com"
-    @user_name = "prasann"
-    @password = "password123."
+    @base_url = "base.url"
+    @user_name = "user.name"
+    @password = "********"
     @api_url = @base_url << "/api/v2/projects/discovery___pass_manager_new"
   end
 
